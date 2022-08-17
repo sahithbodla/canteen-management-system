@@ -11,7 +11,7 @@ export default function Signup() {
   const roleRef = useRef();
   const empIdRef = useRef();
   const nameRef = useRef();
-  const { signup } = useAuth();
+  const { signup, currentUser } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -47,7 +47,9 @@ export default function Signup() {
         email: userData.user.email,
       };
       writeUserData(user);
-      history.push('/login');
+      currentUser
+        ? history.push('./list-of-employees')
+        : history.push('/login');
     } catch {
       setError('Failed to create an account');
     }
@@ -57,10 +59,12 @@ export default function Signup() {
   }
   return (
     <div style={{ width: '400px' }}>
+      {console.log('Current User', currentUser)}
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Sign Up</h2>
-          {/* {currentUser.email} */}
+          <h2 className="text-center mb-4">
+            {currentUser ? 'Add an Employee' : 'Sign Up'}
+          </h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="name">
@@ -96,14 +100,16 @@ export default function Signup() {
               <Form.Control type="text" ref={empIdRef} required></Form.Control>
             </Form.Group>
             <Button disabled={loading} type="submit" className="w-100 mt-4">
-              Sign Up
+              {currentUser ? 'Add an Employee' : 'Sign Up'}
             </Button>
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/login">Log In</Link>
-      </div>
+      {!currentUser && (
+        <div className="w-100 text-center mt-2">
+          Already have an account? <Link to="/login">Log In</Link>
+        </div>
+      )}
     </div>
     // This is another test comment
   );
