@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { employee } from '../ducks';
+import { employee, menu } from '../ducks';
 
 export const store = configureStore({
   reducer: {
     employee,
+    menu,
   },
 });

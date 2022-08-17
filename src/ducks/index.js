@@ -1,3 +1,4 @@
 import employee, { addListOfUsers, addCurrentUser } from './employee';
+import menu, { addMenu } from './menu';
 
-export { employee, addListOfUsers, addCurrentUser };
+export { employee, menu, addListOfUsers, addCurrentUser, addMenu };

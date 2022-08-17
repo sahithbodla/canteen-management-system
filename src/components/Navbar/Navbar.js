@@ -1,10 +1,22 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import Admin from './Admin';
+import { setData } from '../../utils';
 
 const Navbar = (props) => {
-  const { listOfEmployees, setCurrentUser, currentUser: loggedInUser } = props;
+  const {
+    listOfEmployees,
+    setCurrentUser,
+    currentUser: loggedInUser,
+    setListOfEmployees,
+    setMenu,
+  } = props;
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+    setData('users', setListOfEmployees);
+    setData('menu', setMenu);
+  }, []);
 
   useEffect(() => {
     listOfEmployees

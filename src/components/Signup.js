@@ -59,7 +59,6 @@ export default function Signup() {
   }
   return (
     <div style={{ width: '400px' }}>
-      {console.log('Current User', currentUser)}
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">
@@ -111,6 +110,5 @@ export default function Signup() {
         </div>
       )}
     </div>
-    // This is another test comment
   );
 }

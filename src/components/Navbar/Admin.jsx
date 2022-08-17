@@ -12,6 +12,9 @@ const Admin = (props) => {
       >
         Employees
       </Link>
+      <Link to="/menu" className="text-white text-decoration-none mx-2">
+        Menu
+      </Link>
       {currentUser ? <Logout /> : ''}
     </div>
   );
