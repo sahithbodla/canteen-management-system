@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
   const history = useHistory();
 
   async function handleLogout() {
@@ -21,7 +21,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div style={{ minWidth: '400px' }}>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>

@@ -27,7 +27,7 @@ export default function Login() {
     setLoading(false);
   }
   return (
-    <div>
+    <div style={{ width: '400px' }}>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>

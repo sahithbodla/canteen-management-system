@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { listOfEmployeesReducer } from '../ducks';
+import { employee } from '../ducks';
 
 export const store = configureStore({
   reducer: {
-    listOfEmployees: listOfEmployeesReducer,
+    employee,
   },
 });

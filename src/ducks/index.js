@@ -1,3 +1,3 @@
-import listOfEmployeesReducer, { addListOfUsers } from './listOfEmployees';
+import employee, { addListOfUsers, addCurrentUser } from './employee';
 
-export { listOfEmployeesReducer, addListOfUsers };
+export { employee, addListOfUsers, addCurrentUser };
