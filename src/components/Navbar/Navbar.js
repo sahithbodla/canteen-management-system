@@ -10,12 +10,14 @@ const Navbar = (props) => {
     currentUser: loggedInUser,
     setListOfEmployees,
     setMenu,
+    setItemsOfTheDay,
   } = props;
   const { currentUser } = useAuth();
 
   useEffect(() => {
     setData('users', setListOfEmployees);
     setData('menu', setMenu);
+    setData('itemsOfTheDay', setItemsOfTheDay);
   }, []);
 
   useEffect(() => {

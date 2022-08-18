@@ -15,6 +15,12 @@ const Admin = (props) => {
       <Link to="/menu" className="text-white text-decoration-none mx-2">
         Menu
       </Link>
+      <Link
+        to="/items-of-the-day"
+        className="text-white text-decoration-none mx-2"
+      >
+        Items of the day
+      </Link>
       {currentUser ? <Logout /> : ''}
     </div>
   );

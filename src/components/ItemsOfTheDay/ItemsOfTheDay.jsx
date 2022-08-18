@@ -3,10 +3,10 @@ import { setData } from '../../utils';
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Menu = (props) => {
-  const { setMenu, menu } = props;
+const ItemsOfTheDay = (props) => {
+  const { menu, itemsOfTheDay, setItemsOfTheDay } = props;
   useEffect(() => {
-    setData('menu', setMenu);
+    setData('itemsOfTheDay', setItemsOfTheDay);
   }, []);
   return (
     <div style={{ minWidth: '400px' }}>
@@ -21,19 +21,19 @@ const Menu = (props) => {
               </tr>
             </thead>
             <tbody>
-              {menu &&
-                Object.values(menu).map((item) => (
+              {itemsOfTheDay &&
+                itemsOfTheDay.map((itemUid) => (
                   <tr>
-                    <td>{item?.name}</td>
-                    <td>{item?.price}</td>
-                    <td>{item?.quantity}</td>
+                    <td>{menu[itemUid]?.name}</td>
+                    <td>{menu[itemUid]?.price}</td>
+                    <td>{menu[itemUid]?.quantity}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
           <Button className="w-100 mt-4">
             <Link
-              to="/add-item"
+              to="/add-item-of-the-day"
               role="button"
               className="text-decoration-none text-white"
             >
@@ -46,4 +46,4 @@ const Menu = (props) => {
   );
 };
 
-export default Menu;
+export default ItemsOfTheDay;

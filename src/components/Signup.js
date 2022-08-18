@@ -92,7 +92,10 @@ export default function Signup() {
             </Form.Group>
             <Form.Group id="role" className="mt-2">
               <Form.Label>Role</Form.Label>
-              <Form.Control type="text" ref={roleRef} required></Form.Control>
+              <Form.Control as="select" ref={roleRef} required>
+                <option value="Employee">Employee</option>
+                <option value="Admin">Admin</option>
+              </Form.Control>
             </Form.Group>
             <Form.Group id="empId" className="mt-2">
               <Form.Label>Employee ID</Form.Label>
