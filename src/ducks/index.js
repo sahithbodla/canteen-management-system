@@ -1,4 +1,8 @@
-import employee, { addListOfUsers, addCurrentUser } from './employee';
+import employee, {
+  addListOfUsers,
+  addCurrentUser,
+  updateBalance,
+} from './employee';
 import menu, { addMenu, addItemOfTheDay } from './menu';
 
 export {
@@ -8,4 +12,5 @@ export {
   addCurrentUser,
   addMenu,
   addItemOfTheDay,
+  updateBalance,
 };

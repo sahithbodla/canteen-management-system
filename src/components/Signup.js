@@ -45,6 +45,7 @@ export default function Signup() {
         role: roleRef.current.value,
         uid: userData.user.uid,
         email: userData.user.email,
+        balance: '0',
       };
       writeUserData(user);
       currentUser ? history.push('/list-of-employees') : history.push('/login');

@@ -1,4 +1,4 @@
-import { addListOfUsers } from '../../ducks';
+import { addListOfUsers, updateBalance } from '../../ducks';
 import { getEmployees } from '../../selectors';
 
 export const mapStateToProps = (state) => ({
@@ -6,4 +6,5 @@ export const mapStateToProps = (state) => ({
 });
 export const mapDispatchToProps = (dispatch) => ({
   setListOfEmployees: (data) => dispatch(addListOfUsers(data)),
+  updateBalance: (data) => dispatch(updateBalance(data)),
 });
