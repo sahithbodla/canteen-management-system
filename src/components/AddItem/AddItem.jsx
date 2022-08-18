@@ -18,7 +18,7 @@ export default function AddItem(props) {
       return 'a-1';
     }
     const Uids = Object.keys(menu);
-    Uids.map((x) => {
+    Uids.forEach((x) => {
       x = x.split('').reverse().join('');
       UidArr.push(parseInt(x));
     });

@@ -18,13 +18,13 @@ const Navbar = (props) => {
     setData('users', setListOfEmployees);
     setData('menu', setMenu);
     setData('itemsOfTheDay', setItemsOfTheDay);
-  }, []);
+  }, [setListOfEmployees, setMenu, setItemsOfTheDay]);
 
   useEffect(() => {
     listOfEmployees
       ? setCurrentUser(listOfEmployees[currentUser?.uid])
       : setCurrentUser(null);
-  }, [listOfEmployees, currentUser]);
+  }, [listOfEmployees, currentUser, setCurrentUser]);
 
   return (
     <nav className="navbar navbar-light bg-primary w-100">

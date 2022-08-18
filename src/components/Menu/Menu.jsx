@@ -7,7 +7,7 @@ const Menu = (props) => {
   const { setMenu, menu } = props;
   useEffect(() => {
     setData('menu', setMenu);
-  }, []);
+  }, [setMenu]);
   return (
     <div style={{ minWidth: '400px' }}>
       <Card>
@@ -23,7 +23,7 @@ const Menu = (props) => {
             <tbody>
               {menu &&
                 Object.values(menu).map((item) => (
-                  <tr>
+                  <tr key={item.uid}>
                     <td>{item?.name}</td>
                     <td>{item?.price}</td>
                     <td>{item?.quantity}</td>

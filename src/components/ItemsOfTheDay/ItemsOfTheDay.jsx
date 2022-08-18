@@ -7,7 +7,7 @@ const ItemsOfTheDay = (props) => {
   const { menu, itemsOfTheDay, setItemsOfTheDay } = props;
   useEffect(() => {
     setData('itemsOfTheDay', setItemsOfTheDay);
-  }, []);
+  }, [setItemsOfTheDay]);
   return (
     <div style={{ minWidth: '400px' }}>
       <Card>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Logout = () => {
@@ -18,13 +19,13 @@ const Logout = () => {
   }
 
   return (
-    <a
-      role="button"
+    <Button
       className="text-white text-decoration-none mx-2"
       onClick={handleLogout}
+      variant="danger"
     >
       Log Out
-    </a>
+    </Button>
   );
 };
 

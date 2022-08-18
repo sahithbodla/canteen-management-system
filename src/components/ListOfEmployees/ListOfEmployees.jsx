@@ -13,12 +13,12 @@ const ListOfEmployees = (props) => {
   const { setListOfEmployees, listOfEmployees } = props;
   useEffect(() => {
     getUserData(setListOfEmployees);
-  }, []);
+  }, [setListOfEmployees]);
   return (
     <div style={{ minWidth: '400px' }}>
       <Card>
         <Card.Body>
-          <table class="table">
+          <table className="table">
             <thead>
               <tr>
                 <th>Employee ID</th>
@@ -29,7 +29,7 @@ const ListOfEmployees = (props) => {
             <tbody>
               {listOfEmployees &&
                 Object.values(listOfEmployees).map((employee) => (
-                  <tr>
+                  <tr key={employee.uid}>
                     <td>{employee?.empId}</td>
                     <td>{employee?.name}</td>
                     <td>{employee?.email}</td>

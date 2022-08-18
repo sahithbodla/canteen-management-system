@@ -47,9 +47,7 @@ export default function Signup() {
         email: userData.user.email,
       };
       writeUserData(user);
-      currentUser
-        ? history.push('./list-of-employees')
-        : history.push('/login');
+      currentUser ? history.push('/list-of-employees') : history.push('/login');
     } catch {
       setError('Failed to create an account');
     }
