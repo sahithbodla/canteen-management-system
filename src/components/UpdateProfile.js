@@ -84,5 +84,3 @@ export default function UpdateProfile() {
     </div>
   );
 }
-// This is a test comment
-// Second branch

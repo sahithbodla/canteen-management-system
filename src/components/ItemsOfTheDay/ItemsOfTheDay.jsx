@@ -1,13 +1,45 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { setData } from '../../utils';
-import { Card, Button } from 'react-bootstrap';
+import { database } from '../../firebase';
+import { Card, Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const ItemsOfTheDay = (props) => {
-  const { menu, itemsOfTheDay, setItemsOfTheDay } = props;
+  const { menu, itemsOfTheDay, setItemsOfTheDay, setMenu } = props;
+  const [quantity, setQuantity] = useState(0);
+  const [iUid, setIUid] = useState('');
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = (uid) => {
+    setShow(true);
+    setIUid(uid);
+    setQuantity(menu?.[uid].quantity);
+  };
+
   useEffect(() => {
     setData('itemsOfTheDay', setItemsOfTheDay);
   }, [setItemsOfTheDay]);
+
+  useEffect(() => {
+    setData('menu', setMenu);
+  }, [setMenu, iUid]);
+
+  function updateQuantity(uid, quantity) {
+    database
+      .ref(`menu/${uid}/quantity`)
+      .set(quantity)
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
+  const editQuantity = () => {
+    updateQuantity(iUid, quantity);
+    setIUid('');
+    setShow(false);
+  };
+
   return (
     <div style={{ minWidth: '400px' }}>
       <Card>
@@ -26,7 +58,15 @@ const ItemsOfTheDay = (props) => {
                   <tr>
                     <td>{menu[itemUid]?.name}</td>
                     <td>{menu[itemUid]?.price}</td>
-                    <td>{menu[itemUid]?.quantity}</td>
+                    <td>
+                      <div className="d-flex justify-content-around">
+                        {menu[itemUid]?.quantity}
+                        <i
+                          class="bi bi-pencil-square text-primary"
+                          onClick={() => handleShow(itemUid)}
+                        ></i>
+                      </div>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -42,6 +82,29 @@ const ItemsOfTheDay = (props) => {
           </Button>
         </Card.Body>
       </Card>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>Edit Quantity</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {menu?.[iUid]?.name}
+          <Form.Group id="quantity" className="mt-2">
+            <Form.Control
+              type="number"
+              value={quantity}
+              onChange={(val) => setQuantity(val.target.value)}
+            ></Form.Control>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={editQuantity}>
+            Edit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
