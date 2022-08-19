@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { database } from '../../firebase';
 
 const Menu = (props) => {
-  const { setMenu, menu } = props;
+  const { setMenu, menu, currentUser } = props;
 
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
@@ -13,6 +13,8 @@ const Menu = (props) => {
   const [show, setShow] = useState(false);
   const [iUid, setIUid] = useState('');
   const [modal, setModal] = useState('');
+  const admin = currentUser?.role === 'Admin';
+  const employee = currentUser?.role === 'Employee';
 
   const handleClose = () => setShow(false);
   const handleShow = (uid, modal) => {
@@ -127,8 +129,9 @@ const Menu = (props) => {
               <tr>
                 <th>Item Name</th>
                 <th>Price</th>
-                <th>Quantity</th>
-                <th>Action</th>
+                {admin && <th>Quantity</th>}
+                {admin && <th>Action</th>}
+                {employee && <th>Wallet Balance :{currentUser?.balance}</th>}
               </tr>
             </thead>
             <tbody>
@@ -137,32 +140,41 @@ const Menu = (props) => {
                   <tr key={uid}>
                     <td>{item?.name}</td>
                     <td>{item?.price}</td>
-                    <td>{item?.quantity}</td>
-                    <td>
-                      <div className="d-flex justify-content-between">
-                        <i
-                          class="bi bi-pencil-square text-primary"
-                          onClick={() => handleShow(uid, 'EDIT')}
-                        ></i>
-                        <i
-                          class="bi bi-trash3-fill text-danger"
-                          onClick={() => handleShow(uid, 'DELETE')}
-                        ></i>
-                      </div>
-                    </td>
+                    {admin && <td>{item?.quantity}</td>}
+                    {admin && (
+                      <td>
+                        <div className="d-flex justify-content-between">
+                          <i
+                            class="bi bi-pencil-square text-primary"
+                            onClick={() => handleShow(uid, 'EDIT')}
+                          ></i>
+                          <i
+                            class="bi bi-trash3-fill text-danger"
+                            onClick={() => handleShow(uid, 'DELETE')}
+                          ></i>
+                        </div>
+                      </td>
+                    )}
+                    {employee && (
+                      <td className="d-flex justify-content-center">
+                        <Button className="">Buy</Button>
+                      </td>
+                    )}
                   </tr>
                 ))}
             </tbody>
           </table>
-          <Button className="w-100 mt-4">
-            <Link
-              to="/add-item"
-              role="button"
-              className="text-decoration-none text-white"
-            >
-              Add an Item
-            </Link>
-          </Button>
+          {admin && (
+            <Button className="w-100 mt-4">
+              <Link
+                to="/add-item"
+                role="button"
+                className="text-decoration-none text-white"
+              >
+                Add an Item
+              </Link>
+            </Button>
+          )}
         </Card.Body>
       </Card>
       <Modal show={show} onHide={handleClose}>

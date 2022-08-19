@@ -5,11 +5,13 @@ import { Card, Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const ItemsOfTheDay = (props) => {
-  const { menu, itemsOfTheDay, setItemsOfTheDay, setMenu } = props;
+  const { menu, itemsOfTheDay, setItemsOfTheDay, setMenu, currentUser } = props;
 
   const [quantity, setQuantity] = useState(0);
   const [iUid, setIUid] = useState('');
   const [show, setShow] = useState(false);
+
+  const admin = currentUser?.role === 'Admin';
 
   const handleClose = () => setShow(false);
   const handleShow = (uid) => {
@@ -50,7 +52,7 @@ const ItemsOfTheDay = (props) => {
               <tr>
                 <th>Item Name</th>
                 <th>Price</th>
-                <th>Quantity</th>
+                {admin && <th>Quantity</th>}
               </tr>
             </thead>
             <tbody>
@@ -61,29 +63,33 @@ const ItemsOfTheDay = (props) => {
                       <tr>
                         <td>{menu[itemUid].name}</td>
                         <td>{menu[itemUid].price}</td>
-                        <td>
-                          <div className="d-flex justify-content-around">
-                            {menu[itemUid].quantity}
-                            <i
-                              class="bi bi-pencil-square text-primary"
-                              onClick={() => handleShow(itemUid)}
-                            ></i>
-                          </div>
-                        </td>
+                        {admin && (
+                          <td>
+                            <div className="d-flex justify-content-around">
+                              {menu[itemUid].quantity}
+                              <i
+                                class="bi bi-pencil-square text-primary"
+                                onClick={() => handleShow(itemUid)}
+                              ></i>
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     )
                 )}
             </tbody>
           </table>
-          <Button className="w-100 mt-4">
-            <Link
-              to="/add-item-of-the-day"
-              role="button"
-              className="text-decoration-none text-white"
-            >
-              Add an Item
-            </Link>
-          </Button>
+          {admin && (
+            <Button className="w-100 mt-4">
+              <Link
+                to="/add-item-of-the-day"
+                role="button"
+                className="text-decoration-none text-white"
+              >
+                Add an Item
+              </Link>
+            </Button>
+          )}
         </Card.Body>
       </Card>
       <Modal show={show} onHide={handleClose}>
