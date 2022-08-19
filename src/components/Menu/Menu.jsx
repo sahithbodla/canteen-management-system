@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { database } from '../../firebase';
 
 const Menu = (props) => {
-  const { setMenu, menu, currentUser } = props;
+  const { setMenu, menu, currentUser, setListOfUsers } = props;
 
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
@@ -13,6 +13,7 @@ const Menu = (props) => {
   const [show, setShow] = useState(false);
   const [iUid, setIUid] = useState('');
   const [modal, setModal] = useState('');
+  const [buyingQuantity, setBuyingQuantity] = useState(1);
   const admin = currentUser?.role === 'Admin';
   const employee = currentUser?.role === 'Employee';
 
@@ -28,7 +29,8 @@ const Menu = (props) => {
 
   useEffect(() => {
     setData('menu', setMenu);
-  }, [setMenu, iUid]);
+    setData('users', setListOfUsers);
+  }, [setMenu, iUid, buyingQuantity]);
 
   const updateItem = () => {
     const updatedItem = {
@@ -53,6 +55,26 @@ const Menu = (props) => {
       .catch((error) => {
         console.log(error.message);
       });
+    setIUid('');
+    setShow(false);
+  };
+
+  const buyItem = () => {
+    const updatedQuantity = quantity - buyingQuantity;
+    const updatedWalletPrice = currentUser?.balance - price * buyingQuantity;
+    database
+      .ref(`menu/${iUid}/quantity`)
+      .set(updatedQuantity)
+      .catch((error) => {
+        console.log(error.message);
+      });
+    database
+      .ref(`users/${currentUser.uid}/balance`)
+      .set(updatedWalletPrice)
+      .catch((error) => {
+        console.log(error.message);
+      });
+    setBuyingQuantity(1);
     setIUid('');
     setShow(false);
   };
@@ -120,6 +142,36 @@ const Menu = (props) => {
     );
   };
 
+  const buyItemJSX = () => {
+    return (
+      <>
+        <Modal.Header>
+          <Modal.Title>Do you want to buy {name} ?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group id="buyingQuantity" className="mt-2">
+            <Form.Label>Quantity {`(${quantity} left)`}</Form.Label>
+            <Form.Control
+              type="number"
+              value={buyingQuantity}
+              onChange={(val) => setBuyingQuantity(val.target.value)}
+              className="mb-2"
+            ></Form.Control>
+          </Form.Group>
+          {price * buyingQuantity} will be debited from your wallet
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="success" onClick={buyItem}>
+            Buy {name}
+          </Button>
+        </Modal.Footer>
+      </>
+    );
+  };
+
   return (
     <div style={{ minWidth: '400px' }}>
       <Card>
@@ -157,7 +209,9 @@ const Menu = (props) => {
                     )}
                     {employee && (
                       <td className="d-flex justify-content-center">
-                        <Button className="">Buy</Button>
+                        <Button onClick={() => handleShow(uid, 'BUY')}>
+                          Buy
+                        </Button>
                       </td>
                     )}
                   </tr>
@@ -180,6 +234,7 @@ const Menu = (props) => {
       <Modal show={show} onHide={handleClose}>
         {modal === 'EDIT' && editModalJSX()}
         {modal === 'DELETE' && deleteModalJSX()}
+        {modal === 'BUY' && buyItemJSX()}
       </Modal>
     </div>
   );

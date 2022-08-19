@@ -1,4 +1,4 @@
-import { addMenu } from '../../ducks';
+import { addMenu, addListOfUsers } from '../../ducks';
 import { getEmployees, getMenu, getCurrentUser } from '../../selectors';
 
 export const mapStateToProps = (state) => ({
@@ -8,4 +8,5 @@ export const mapStateToProps = (state) => ({
 });
 export const mapDispatchToProps = (dispatch) => ({
   setMenu: (data) => dispatch(addMenu(data)),
+  setListOfUsers: (data) => dispatch(addListOfUsers(data)),
 });

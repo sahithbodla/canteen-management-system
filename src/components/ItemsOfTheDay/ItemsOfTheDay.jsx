@@ -12,6 +12,7 @@ const ItemsOfTheDay = (props) => {
   const [show, setShow] = useState(false);
 
   const admin = currentUser?.role === 'Admin';
+  const employee = currentUser?.role === 'Employee';
 
   const handleClose = () => setShow(false);
   const handleShow = (uid) => {
@@ -87,6 +88,17 @@ const ItemsOfTheDay = (props) => {
                 className="text-decoration-none text-white"
               >
                 Add an Item
+              </Link>
+            </Button>
+          )}
+          {employee && (
+            <Button className="w-100 mt-4">
+              <Link
+                to="/menu"
+                role="button"
+                className="text-decoration-none text-white"
+              >
+                Want to but any item?
               </Link>
             </Button>
           )}
