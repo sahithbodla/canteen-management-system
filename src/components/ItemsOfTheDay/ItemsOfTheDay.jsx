@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 const ItemsOfTheDay = (props) => {
   const { menu, itemsOfTheDay, setItemsOfTheDay, setMenu } = props;
+
   const [quantity, setQuantity] = useState(0);
   const [iUid, setIUid] = useState('');
   const [show, setShow] = useState(false);
@@ -54,21 +55,24 @@ const ItemsOfTheDay = (props) => {
             </thead>
             <tbody>
               {itemsOfTheDay &&
-                itemsOfTheDay.map((itemUid) => (
-                  <tr>
-                    <td>{menu[itemUid]?.name}</td>
-                    <td>{menu[itemUid]?.price}</td>
-                    <td>
-                      <div className="d-flex justify-content-around">
-                        {menu[itemUid]?.quantity}
-                        <i
-                          class="bi bi-pencil-square text-primary"
-                          onClick={() => handleShow(itemUid)}
-                        ></i>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                itemsOfTheDay.map(
+                  (itemUid) =>
+                    menu[itemUid] && (
+                      <tr>
+                        <td>{menu[itemUid].name}</td>
+                        <td>{menu[itemUid].price}</td>
+                        <td>
+                          <div className="d-flex justify-content-around">
+                            {menu[itemUid].quantity}
+                            <i
+                              class="bi bi-pencil-square text-primary"
+                              onClick={() => handleShow(itemUid)}
+                            ></i>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                )}
             </tbody>
           </table>
           <Button className="w-100 mt-4">

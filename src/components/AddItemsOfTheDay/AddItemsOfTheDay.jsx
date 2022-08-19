@@ -49,8 +49,8 @@ export default function AddItemsOfTheDay(props) {
               <Form.Label>Select an Item of the Day</Form.Label>
               <Form.Control as="select" ref={itemRef} required>
                 {menu &&
-                  Object.values(menu).map((item) => (
-                    <option value={item.uid}>{item.name}</option>
+                  Object.entries(menu).map(([uid, item]) => (
+                    <option value={uid}>{item.name}</option>
                   ))}
               </Form.Control>
             </Form.Group>
