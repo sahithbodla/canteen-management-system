@@ -6,6 +6,9 @@ const Employee = (props) => {
   const { currentUser } = props;
   return (
     <div className="mx-4">
+      <Link to="/" className="text-white text-decoration-none mx-2">
+        Dashboard
+      </Link>
       <Link to="/passbook" className="text-white text-decoration-none mx-2">
         Passbook
       </Link>
