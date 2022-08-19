@@ -14,6 +14,7 @@ import Menu from '../components/Menu';
 import AddItem from '../components/AddItem';
 import ItemsOfTheDay from './ItemsOfTheDay';
 import AddItemsOfTheDay from './AddItemsOfTheDay';
+import Passbook from './Passbook';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
                 />
                 <PrivateRoute path="/menu" component={Menu} />
                 <PrivateRoute path="/add-item" component={AddItem} />
+                <PrivateRoute path="/passbook" component={Passbook} />
                 <PrivateRoute
                   path="/items-of-the-day"
                   component={ItemsOfTheDay}
