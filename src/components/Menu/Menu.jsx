@@ -5,7 +5,15 @@ import { Link } from 'react-router-dom';
 import { database } from '../../firebase';
 
 const Menu = (props) => {
-  const { setMenu, menu, currentUser, setListOfUsers, listOfEmployees } = props;
+  const {
+    setMenu,
+    menu,
+    currentUser,
+    setListOfUsers,
+    listOfEmployees,
+    transactions,
+    setTransaction,
+  } = props;
 
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
@@ -30,9 +38,22 @@ const Menu = (props) => {
     }
   };
 
+  const getUniqueUid = () => {
+    const UidArr = [];
+    if (transactions === null) {
+      return 't-1';
+    }
+    const Uids = Object.keys(transactions);
+    Uids.forEach((x) => {
+      UidArr.push(Number(x.split('-')[1]));
+    });
+    return 't-' + (Math.max(...UidArr) + 1);
+  };
+
   useEffect(() => {
     setData('menu', setMenu);
     setData('users', setListOfUsers);
+    setData('transactions', setTransaction);
   }, [setMenu, iUid, purchaseQuantity]);
 
   useEffect(() => {
@@ -68,6 +89,24 @@ const Menu = (props) => {
     setShow(false);
   };
 
+  const addTransaction = (amount, employee = currentUser.uid) => {
+    const transaction = {
+      uid: getUniqueUid(),
+      source: currentUser.uid,
+      item: name,
+      type: 'Debit',
+      employee,
+      amount,
+    };
+    database
+      .ref('transactions/' + getUniqueUid())
+      .set(transaction)
+      .catch((error) => {
+        console.log(error.message);
+      });
+    console.log(transaction);
+  };
+
   const buyItem = () => {
     const updatedQuantity = quantity - purchaseQuantity;
     const updatedWalletPrice = currentUser?.balance - price * purchaseQuantity;
@@ -83,6 +122,7 @@ const Menu = (props) => {
       .catch((error) => {
         console.log(error.message);
       });
+    addTransaction(price * purchaseQuantity);
     setPurchaseQuantity(1);
     setIUid('');
     setShow(false);
@@ -104,6 +144,7 @@ const Menu = (props) => {
       .catch((error) => {
         console.log(error.message);
       });
+    addTransaction(price * purchaseQuantity, eUid);
     setPurchaseQuantity(1);
     setIUid('');
     setEUid('');

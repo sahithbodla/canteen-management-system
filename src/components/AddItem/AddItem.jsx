@@ -19,13 +19,9 @@ export default function AddItem(props) {
     }
     const Uids = Object.keys(menu);
     Uids.forEach((x) => {
-      x = x.split('').reverse().join('');
-      UidArr.push(parseInt(x));
+      UidArr.push(Number(x.split('-')[1]));
     });
-    return String(Math.max(...UidArr) + 1 + '-a')
-      .split('')
-      .reverse()
-      .join('');
+    return 'a-' + (Math.max(...UidArr) + 1);
   };
 
   function writeItemData(item) {

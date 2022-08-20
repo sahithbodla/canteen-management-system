@@ -8,19 +8,57 @@ function getUserData(setListOfEmployees) {
   });
 }
 
+function getTransactionsData(setListOfEmployees) {
+  database.ref('transactions').once('value', (snap) => {
+    setListOfEmployees(snap.val());
+  });
+}
+
 const Passbook = (props) => {
-  const { currentUser, setListOfEmployees } = props;
+  const { currentUser, setListOfEmployees, setTransaction, transactions } =
+    props;
 
   const [show, setShow] = useState(false);
   const [money, setMoney] = useState(0);
 
+  const getUniqueUid = () => {
+    const UidArr = [];
+    if (transactions === null) {
+      return 't-1';
+    }
+    const Uids = Object.keys(transactions);
+    Uids.forEach((x) => {
+      UidArr.push(Number(x.split('-')[1]));
+    });
+    return 't-' + (Math.max(...UidArr) + 1);
+  };
+
   useEffect(() => {
     getUserData(setListOfEmployees);
+    getTransactionsData(setTransaction);
   }, [money]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
     setShow(true);
+  };
+
+  const addTransaction = (amount) => {
+    const transaction = {
+      uid: getUniqueUid(),
+      source: currentUser.uid,
+      item: 'Recharge',
+      type: 'Credit',
+      employee: currentUser.uid,
+      amount,
+    };
+    database
+      .ref('transactions/' + getUniqueUid())
+      .set(transaction)
+      .catch((error) => {
+        console.log(error.message);
+      });
+    console.log(transaction);
   };
 
   const addMoney = () => {
@@ -31,6 +69,7 @@ const Passbook = (props) => {
       .catch((error) => {
         console.log(error.message);
       });
+    addTransaction(Number(money));
     setMoney(0);
     setShow(false);
   };

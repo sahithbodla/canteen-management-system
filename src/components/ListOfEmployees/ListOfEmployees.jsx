@@ -8,9 +8,20 @@ function getUserData(setListOfEmployees) {
     setListOfEmployees(snap.val());
   });
 }
+function getTransactionsData(setListOfEmployees) {
+  database.ref('transactions').once('value', (snap) => {
+    setListOfEmployees(snap.val());
+  });
+}
 
 const ListOfEmployees = (props) => {
-  const { setListOfEmployees, listOfEmployees } = props;
+  const {
+    setListOfEmployees,
+    listOfEmployees,
+    currentUser,
+    setTransaction,
+    transactions,
+  } = props;
   const [search, setSearch] = useState('');
   const [money, setMoney] = useState(0);
   const [eUid, setEUid] = useState('');
@@ -23,9 +34,22 @@ const ListOfEmployees = (props) => {
     setEUid(uid);
   };
 
+  const getUniqueUid = () => {
+    const UidArr = [];
+    if (transactions === null) {
+      return 't-1';
+    }
+    const Uids = Object.keys(transactions);
+    Uids.forEach((x) => {
+      UidArr.push(Number(x.split('-')[1]));
+    });
+    return 't-' + (Math.max(...UidArr) + 1);
+  };
+
   useEffect(() => {
     getUserData(setListOfEmployees);
-  }, [setListOfEmployees, eUid]);
+    getTransactionsData(setTransaction);
+  }, [setListOfEmployees, setTransaction, eUid]);
 
   useEffect(() => {
     if (search === '') {
@@ -47,7 +71,6 @@ const ListOfEmployees = (props) => {
   }, [search, listOfEmployees]);
 
   function updateEmployeeBalance(uid, balance) {
-    console.log(typeof balance, balance);
     database
       .ref(`users/${uid}/balance`)
       .set(balance)
@@ -56,9 +79,28 @@ const ListOfEmployees = (props) => {
       });
   }
 
+  const addTransaction = (amount) => {
+    const transaction = {
+      uid: getUniqueUid(),
+      source: currentUser.uid,
+      item: 'Recharge',
+      type: 'Credit',
+      employee: eUid,
+      amount,
+    };
+    database
+      .ref('transactions/' + getUniqueUid())
+      .set(transaction)
+      .catch((error) => {
+        console.log(error.message);
+      });
+    console.log(transaction);
+  };
+
   const addMoneyToEmployee = () => {
     const currentBalance = listOfEmployees[eUid]?.balance;
     updateEmployeeBalance(eUid, Number(currentBalance) + Number(money));
+    addTransaction(Number(money));
     setEUid('');
     setMoney(0);
     setShow(false);

@@ -9,6 +9,9 @@ const Admin = (props) => {
       <Link to="/" className="text-white text-decoration-none mx-2">
         Dashboard
       </Link>
+      <Link to="/transactions" className="text-white text-decoration-none mx-2">
+        Transactions
+      </Link>
       <Link
         to="/list-of-employees"
         className="text-white text-decoration-none mx-2"
