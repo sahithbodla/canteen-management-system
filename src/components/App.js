@@ -25,7 +25,7 @@ function App() {
           <div style={{ minHeight: '100vh' }}>
             <Navbar />
             <Container
-              className="w-100 d-flex align-items-center justify-content-center"
+              className="w-100 d-flex justify-content-center mt-4"
               style={{ height: 'calc(100vh - 70px)' }}
             >
               <Switch>
